@@ -5,6 +5,6 @@
 
 #include <list>
 
-#include "../src/main.h"
+#include "../code/main.h"
 
 #endif

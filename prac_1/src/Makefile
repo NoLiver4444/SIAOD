@@ -4,7 +4,7 @@ CXXFLAGS = -Wall -Wextra -std=c++20 -pedantic-errors
 LDFLAGS = -lgtest -lgtest_main -lpthread
 
 # Исходные файлы
-SRC_DIR = src
+SRC_DIR = code
 TEST_DIR = tests
 OBJ_DIR = obj
 GCOV_DIR = obj/gcov
