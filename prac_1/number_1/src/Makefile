@@ -99,12 +99,12 @@ clean:
 rebuild: clean all
 
 clang:
-	cp ../../materials/.clang-format ./.clang-format
+	cp ../../../materials/.clang-format ./.clang-format
 	clang-format -n --style=file $$(find . -type f \( -name "*.tpp" -o -name "*.h" -o -name "*.cpp" \))
 	rm -f .clang-format
 
 clang-fix:
-	cp ../../materials/.clang-format ./.clang-format
+	cp ../../../materials/.clang-format ./.clang-format
 	clang-format -i --style=file $$(find . -type f \( -name "*.tpp" -o -name "*.h" -o -name "*.cpp" \))
 	rm -f .clang-format
 

@@ -12,4 +12,6 @@
     2. Побитовая инверсия маски после сдвига.
     3. Выполнение конъюнкции (x & maska).
 */
-int bit_mask(unsigned char x, unsigned char maska, int move) { return x & (~(maska << move)); }
+int bit_mask(unsigned char x, unsigned char maska, int move) {
+  return x & (~(maska << move));
+}
