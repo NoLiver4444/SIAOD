@@ -22,3 +22,26 @@ void print_64_bit_kit(unsigned long long bit_kit, int len) {
   }
   cout << endl;
 }
+
+// 2.в
+vector<unsigned char> sort_64_bit_unsigned_kit(vector<int> original_vector) {
+  vector<unsigned char> bit_kit = {0, 0, 0, 0, 0, 0, 0, 0};
+
+  for (auto i : original_vector) {
+    bit_kit[i / 8] |= (1 << (7 - (i % 8)));
+  }
+
+  return bit_kit;
+}
+
+void print_64_bit_unsigned_kit(unsigned char bit_kit, int len) {
+  unsigned char maska = (1 << (len - 1));
+
+  for (int i = 0; i < len; ++i) {
+    if (bit_kit & maska) {
+      cout << i << " ";
+    }
+    maska = maska >> 1;
+  }
+  cout << endl;
+}
