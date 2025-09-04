@@ -95,6 +95,9 @@ clean:
 	rm -f $(TARGET) $(GCOV_TARGET) $(MAIN_TARGET)
 	rm -rf coverage
 	rm -f coverage.info.cleaned
+	rm -f test_file/answ/*.txt
+	rm -f test_file/code_answ/*.txt
+	rm -f test_file/tests/*.txt
 
 rebuild: clean all
 

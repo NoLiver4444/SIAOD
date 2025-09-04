@@ -1,5 +1,5 @@
-#ifndef S21_TEST_MATRIX_H
-#define S21_TEST_MATRIX_H
+#ifndef TEST_H
+#define TEST_H
 
 #include <stdlib.h>
 

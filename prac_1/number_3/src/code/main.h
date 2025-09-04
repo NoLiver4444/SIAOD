@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 
 #include <iostream>
-#include <vector>
+#include <bitset>
 #include <fstream>
 
 using namespace std;
