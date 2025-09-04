@@ -77,7 +77,6 @@ TEST(c_2, test_1) {
     EXPECT_EQ(expected_bytes[i], code_answ[i]);
   }
 
-  // Вывод должен быть: 1 3 4 6 15 23 32 43
   print_64_bit_unsigned_kit(code_answ);
 }
 
@@ -94,7 +93,6 @@ TEST(c_2, test_2) {
     EXPECT_EQ(expected_bytes[i], code_answ[i]);
   }
 
-  // Вывод должен быть: 1 3 4 6 15 23 32 43
   print_64_bit_unsigned_kit(code_answ);
 }
 
@@ -110,6 +108,5 @@ TEST(c_2, test_3) {
     EXPECT_EQ(expected_bytes[i], code_answ[i]);
   }
 
-  // Вывод должен быть: 1 3 4 6 15 23 32 43
   print_64_bit_unsigned_kit(code_answ);
 }

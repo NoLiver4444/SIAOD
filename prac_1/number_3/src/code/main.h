@@ -5,9 +5,10 @@
 
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
-#include "bit_sort.h"
+#include "file_bit_sort.h"
 
 #endif
