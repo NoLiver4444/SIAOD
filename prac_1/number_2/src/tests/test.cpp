@@ -101,7 +101,8 @@ TEST(c_2, test_3) {
   vector<unsigned char> code_answ = sort_64_bit_unsigned_kit(vect);
 
   // ПРАВИЛЬНЫЕ ожидаемые значения
-  unsigned char expected_bytes[8] = {0xED, 0x08, 0x01, 0x00, 0x00, 0x21, 0x02, 0x00};
+  unsigned char expected_bytes[8] = {0xED, 0x08, 0x01, 0x00,
+                                     0x00, 0x21, 0x02, 0x00};
 
   // Сравниваем побайтово
   for (int i = 0; i < 8; ++i) {

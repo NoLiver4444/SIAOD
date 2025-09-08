@@ -1,8 +1,9 @@
 #ifndef FILE_BIT_SORT_H_
 #define FILE_BIT_SORT_H_
 
-#include "main.h"
 #include <chrono>
+
+#include "main.h"
 
 using namespace std::chrono;
 

@@ -3,9 +3,9 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>
 #include <bitset>
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
