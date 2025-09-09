@@ -21,6 +21,17 @@ void print_64_bit_kit(unsigned long long bit_kit, int len) {
     maska >>= 1;
   }
   cout << endl;
+
+  maska = 1ULL << (len - 1);
+
+  for (int i = 0; i < len; ++i) {
+    if (bit_kit & maska) {
+      cout << 1 << " ";
+    } else {
+      cout << 0 << " ";
+    }
+    maska = maska >> 1;
+  }
 }
 
 // 2.в
@@ -45,4 +56,16 @@ void print_64_bit_unsigned_kit(vector<unsigned char> bit_kit) {
     }
   }
   cout << endl;
+
+  for (int i = 0; i < 8; ++i) {
+    unsigned char mask = 0x80;  // 10000000 в двоичной
+    for (int j = 0; j < 8; ++j) {
+      if (bit_kit[i] & mask) {
+        cout << 1 << " ";
+      } else {
+        cout << 0 << " ";
+      }
+      mask >>= 1;
+    }
+  }
 }

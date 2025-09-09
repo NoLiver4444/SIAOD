@@ -27,5 +27,18 @@ void print_8_bit_kit(unsigned char bit_kit, int len) {
     }
     maska = maska >> 1;
   }
+
+  maska = (1 << (len - 1));
+  cout << "\n";
+
+  for (int i = 0; i < len; ++i) {
+    if (bit_kit & maska) {
+      cout << 1 << " ";
+    } else {
+      cout << 0 << " ";
+    }
+    maska = maska >> 1;
+  }
+
   cout << endl;
 }

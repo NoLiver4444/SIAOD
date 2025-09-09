@@ -13,5 +13,14 @@
     3. Выполнение конъюнкции (x & maska).
 */
 int bit_mask(unsigned char x, unsigned char maska, int move) {
-  return x & (~(maska << move));
+  unsigned char answ = x & (~(maska << move));
+  unsigned char mask_print = 0x80;
+  
+  for (int i = 0; i < 8; ++i) {
+      std::cout << ((answ & mask_print) ? '1' : '0');
+      mask_print >>= 1;
+  }
+  std::cout << std::endl;
+
+  return answ;
 }
