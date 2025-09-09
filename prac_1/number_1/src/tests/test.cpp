@@ -1,22 +1,48 @@
 #include "test.h"
 
 // Тесты для 1.a
-TEST(a_1, test_1) { EXPECT_EQ(bit_mask(255, 1, 4), 239); }
+TEST(a_1, test_1) {
+    cout << "x : " << 255 << endl;
+    cout << "maska : " << "00000001" << endl;
+    cout << "move : " << 4 << endl;
+    
+    EXPECT_EQ(bit_mask(255, 1, 4), 239);
+}
 
-TEST(a_1, test_2) { EXPECT_EQ(bit_mask(154, 1, 4), 138); }
+TEST(a_1, test_2) {
+    cout << "x : " << 154 << endl;
+    cout << "maska : " << "00000001" << endl;
+    cout << "move : " << 4 << endl;
 
-TEST(a_1, test_3) { EXPECT_EQ(bit_mask(73, 1, 4), 73); }
+    EXPECT_EQ(bit_mask(154, 1, 4), 138);
+}
+
+TEST(a_1, test_3) {
+    cout << "x : " << 73 << endl;
+    cout << "maska : " << "00000001" << endl;
+    cout << "move : " << 4 << endl;
+
+    EXPECT_EQ(bit_mask(73, 1, 4), 73);
+}
 
 // Тесты для 1.б
-TEST(b_1, test_1) { EXPECT_EQ(bit_mask(255, 1, 7), 127); }
+TEST(b_1, test_1) {
+    cout << "x : " << 0 << endl;
+    cout << "maska : " << "00000001" << endl;
+    cout << "move : " << 7 << endl;
 
-TEST(b_1, test_2) { EXPECT_EQ(bit_mask(154, 1, 7), 26); }
+    EXPECT_EQ(bit_mask_to_1(0, 1, 7), 128); }
 
-TEST(b_1, test_3) { EXPECT_EQ(bit_mask(73, 1, 7), 73); }
+TEST(b_1, test_2) { 
+    cout << "x : " << 8 << endl;
+    cout << "maska : " << "00000001" << endl;
+    cout << "move : " << 7 << endl;
 
-// Доп тесты
-TEST(bit_mask, one_bit_maska_1) { EXPECT_EQ(bit_mask(255, 1, 0), 254); }
+    EXPECT_EQ(bit_mask_to_1(8, 1, 7), 136); }
 
-TEST(bit_mask, one_bit_maska_2) { EXPECT_EQ(bit_mask(255, 1, 3), 247); }
-
-TEST(bit_mask, one_bit_maska_3) { EXPECT_EQ(bit_mask(255, 1, 6), 191); }
+TEST(b_1, test_3) { 
+    cout << "x : " << 1 << endl;
+    cout << "maska : " << "00000001" << endl;
+    cout << "move : " << 7 << endl;
+    
+    EXPECT_EQ(bit_mask_to_1(1, 1, 7), 129); }
