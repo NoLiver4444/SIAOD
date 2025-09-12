@@ -3,10 +3,13 @@
 
 #include <gtest/gtest.h>
 
+#include <cstring>
+#include <fstream>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-#include "bit_oper.h"
+#include "file_create.h"
 
 #endif

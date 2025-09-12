@@ -15,10 +15,10 @@
 int bit_mask(unsigned char x, unsigned char maska, int move) {
   unsigned char answ = x & (~(maska << move));
   unsigned char mask_print = 0x80;
-  
+
   for (int i = 0; i < 8; ++i) {
-      std::cout << ((answ & mask_print) ? '1' : '0');
-      mask_print >>= 1;
+    std::cout << ((answ & mask_print) ? '1' : '0');
+    mask_print >>= 1;
   }
   std::cout << std::endl;
 
@@ -28,10 +28,10 @@ int bit_mask(unsigned char x, unsigned char maska, int move) {
 int bit_mask_to_1(unsigned char x, unsigned char maska, int move) {
   unsigned char answ = x | (maska << move);
   unsigned char mask_print = 0x80;
-  
+
   for (int i = 0; i < 8; ++i) {
-      std::cout << ((answ & mask_print) ? '1' : '0');
-      mask_print >>= 1;
+    std::cout << ((answ & mask_print) ? '1' : '0');
+    mask_print >>= 1;
   }
   std::cout << std::endl;
 

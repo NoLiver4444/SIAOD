@@ -4,7 +4,7 @@ CXXFLAGS = -Wall -Wextra -std=c++20 -pedantic-errors
 LDFLAGS = -lgtest -lgtest_main -lpthread
 
 # Исходные файлы
-SRC_DIR = code
+SRC_DIR = src
 TEST_DIR = tests
 OBJ_DIR = obj
 GCOV_DIR = obj/gcov
@@ -95,16 +95,17 @@ clean:
 	rm -f $(TARGET) $(GCOV_TARGET) $(MAIN_TARGET)
 	rm -rf coverage
 	rm -f coverage.info.cleaned
+	rm -f *.bin
 
 rebuild: clean all
 
 clang:
-	cp ../../../materials/.clang-format ./.clang-format
+	cp ../materials/.clang-format ./.clang-format
 	clang-format -n --style=file $$(find . -type f \( -name "*.tpp" -o -name "*.h" -o -name "*.cpp" \))
 	rm -f .clang-format
 
 clang-fix:
-	cp ../../../materials/.clang-format ./.clang-format
+	cp ../materials/.clang-format ./.clang-format
 	clang-format -i --style=file $$(find . -type f \( -name "*.tpp" -o -name "*.h" -o -name "*.cpp" \))
 	rm -f .clang-format
 
