@@ -3,13 +3,12 @@
 
 #include <gtest/gtest.h>
 
-#include <cstring>
-#include <fstream>
 #include <iostream>
 #include <string>
 
 using namespace std;
 
-#include "file_create.h"
+#include "get_random_data.h"
+#include "binary_file_handler.h"
 
 #endif

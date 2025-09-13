@@ -31,9 +31,9 @@ TEST_OBJS = $(patsubst $(TEST_DIR)/%.cpp,$(TESTS_OBJ_DIR)/%.o,$(TEST_SRCS))
 MAIN_SRC = $(wildcard $(SRC_DIR)/main.cpp)
 MAIN_OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(MAIN_SRC))
 
-.PHONY: all test gcov_report clean rebuild style leaks valgrind
+.PHONY: all test gcov_report clean rebuild style leaks valgrind answ
 
-all: test
+all: answ test
 
 test: $(TARGET)
 
@@ -95,7 +95,8 @@ clean:
 	rm -f $(TARGET) $(GCOV_TARGET) $(MAIN_TARGET)
 	rm -rf coverage
 	rm -f coverage.info.cleaned
-	rm -f *.bin
+	rm -f answ/*.bin
+	rm -f answ/*.txt
 
 rebuild: clean all
 
@@ -114,3 +115,6 @@ leaks:
 
 valgrind:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TARGET)
+
+answ:
+	mkdir -p answ
