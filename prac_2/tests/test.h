@@ -3,9 +3,9 @@
 
 #include <gtest/gtest.h>
 
+#include <chrono>
 #include <iostream>
 #include <string>
-#include <chrono>
 
 using namespace std;
 using namespace std::chrono;

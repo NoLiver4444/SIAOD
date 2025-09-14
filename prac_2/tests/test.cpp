@@ -1,4 +1,5 @@
 #include "test.h"
+
 #include <chrono>
 #include <iostream>
 
@@ -7,10 +8,10 @@ using namespace std::chrono;
 
 // Объявление дружественного класса для доступа к приватным методам
 class BinaryFileHandlerTestFriend {
-public:
-    static void create_index(BinaryFileHandler* handler) {
-        handler->create_index();
-    }
+ public:
+  static void create_index(BinaryFileHandler *handler) {
+    handler->create_index();
+  }
 };
 
 int main() {
@@ -272,7 +273,7 @@ TEST(number_3, test_6) {
   binary_file_handler->input_to_file(user3);
 
   BinaryFileHandlerTestFriend::create_index(binary_file_handler);
-  
+
   auto start = high_resolution_clock::now();
   string answ = binary_file_handler->binary_search_result("+9-999-999-99-99");
   auto end = high_resolution_clock::now();

@@ -11,13 +11,13 @@ int main() {
 
   file_name = "answ/" + file_name + ".bin";
 
-  BinaryFileHandler *binary_file_handler =
-      new BinaryFileHandler(file_name);
+  BinaryFileHandler *binary_file_handler = new BinaryFileHandler(file_name);
 
   UserInfo user;
-  
+
   while (1) {
-    cout << "\n1. Insert data\n2. Random data\n3. Liner search\n4. Binary search\n5. Print file\n0. Exit\n";
+    cout << "\n1. Insert data\n2. Random data\n3. Liner search\n4. Binary "
+            "search\n5. Print file\n0. Exit\n";
     cin >> choose;
 
     if (choose == 1) {
@@ -31,7 +31,7 @@ int main() {
       user.name = name;
       user.phone = phone;
       user.address = address;
-      
+
       binary_file_handler->input_to_file(user);
     } else if (choose == 2) {
       cout << "\nLen: ";
@@ -54,7 +54,7 @@ int main() {
       cin >> phone;
 
       binary_file_handler->create_index();
-      
+
       auto start = high_resolution_clock::now();
       answ = binary_file_handler->binary_search_result(phone);
       auto end = high_resolution_clock::now();
