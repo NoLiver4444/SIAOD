@@ -139,3 +139,48 @@ void BinaryFileHandler::create_index() {
 
   binFile.close();
 }
+
+// Бинарный поиск номера
+streampos BinaryFileHandler::binary_search_index(const string &phone) {
+  if (!index_loaded) {
+    create_index();
+  }
+
+  int left = 0;
+  int right = index_table.size() - 1;
+
+  while (left <= right) {
+    int mid = left + (right - left) / 2;
+
+    if (index_table[mid].phone == phone) {
+      return index_table[mid].offset;
+    } else if (index_table[mid].phone < phone) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  return -1;
+}
+
+// Поиск строки и вывод её в формате строки
+string BinaryFileHandler::binary_search_result(const string &phone) {
+  streampos phone_pose = binary_search_index(phone);
+  string answ;
+
+  if (phone_pose == -1) {
+    answ = "not found";
+  } else {
+    ifstream binFile(file_name, ios::binary);
+    binFile.seekg(phone_pose);
+
+    UserInfo user;
+    binary_to_UserInfo(&user, binFile);
+    binFile.close();
+
+    answ = user.name + ": " + user.phone + ", " + user.address + "\n";
+  }
+
+  return answ;
+}

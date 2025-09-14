@@ -1,6 +1,6 @@
 #include "test.h"
 
-TEST(tests, test_1) {
+TEST(number_1_2, test_1) {
   BinaryFileHandler *binary_file_handler =
       new BinaryFileHandler("answ/out.bin");
 
@@ -15,7 +15,7 @@ TEST(tests, test_1) {
   delete binary_file_handler;
 }
 
-TEST(tests, test_2) {
+TEST(number_1_2, test_2) {
   BinaryFileHandler *binary_file_handler =
       new BinaryFileHandler("answ/out.bin");
 
@@ -36,7 +36,7 @@ TEST(tests, test_2) {
   delete binary_file_handler;
 }
 
-TEST(tests, test_3) {
+TEST(number_1_2, test_3) {
   BinaryFileHandler *binary_file_handler =
       new BinaryFileHandler("answ/out_1.bin");
 
@@ -57,7 +57,7 @@ TEST(tests, test_3) {
   delete binary_file_handler;
 }
 
-TEST(tests, test_4) {
+TEST(number_1_2, test_4) {
   BinaryFileHandler *binary_file_handler =
       new BinaryFileHandler("answ/out_2.bin");
 
@@ -78,7 +78,7 @@ TEST(tests, test_4) {
   delete binary_file_handler;
 }
 
-TEST(tests, test_5) {
+TEST(number_1_2, test_5) {
   BinaryFileHandler *binary_file_handler =
       new BinaryFileHandler("answ/out_3.bin");
 
@@ -95,6 +95,81 @@ TEST(tests, test_5) {
   EXPECT_EQ("@zxcv", answ.address);
 
   binary_file_handler->binary_to_txt();
+
+  delete binary_file_handler;
+}
+
+TEST(number_1_2, test_6) {
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out_3.bin");
+
+  binary_file_handler->random_file(100);
+
+  UserInfo answ = binary_file_handler->linear_search("+9-999-999-99-99");
+
+  EXPECT_EQ("", answ.name);
+  EXPECT_EQ("", answ.phone);
+  EXPECT_EQ("", answ.address);
+
+  binary_file_handler->binary_to_txt();
+
+  delete binary_file_handler;
+}
+
+TEST(number_3, test_1) {
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out_4.bin");
+
+  binary_file_handler->random_file(5000);
+
+  UserInfo user3("zxcv", "+9-999-999-99-99", "@zxcv");
+  binary_file_handler->input_to_file(user3);
+
+  binary_file_handler->random_file(4999);
+
+  binary_file_handler->create_index();
+  string answ = binary_file_handler->binary_search_result("+9-999-999-99-99");
+
+  binary_file_handler->binary_to_txt();
+
+  EXPECT_EQ("zxcv: +9-999-999-99-99, @zxcv\n", answ);
+
+  delete binary_file_handler;
+}
+
+TEST(number_3, test_2) {
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out_4.bin");
+
+  binary_file_handler->random_file(5000);
+
+  UserInfo user3("zxcv", "+1-111-111-11-11", "@zxcv");
+  binary_file_handler->input_to_file(user3);
+
+  binary_file_handler->random_file(4999);
+
+  binary_file_handler->create_index();
+  string answ = binary_file_handler->binary_search_result("+1-111-111-11-11");
+
+  binary_file_handler->binary_to_txt();
+
+  EXPECT_EQ("zxcv: +1-111-111-11-11, @zxcv\n", answ);
+
+  delete binary_file_handler;
+}
+
+TEST(number_3, test_3) {
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out_4.bin");
+
+  binary_file_handler->random_file(100);
+
+  binary_file_handler->create_index();
+  string answ = binary_file_handler->binary_search_result("+9-999-999-99-99");
+
+  binary_file_handler->binary_to_txt();
+
+  EXPECT_EQ("not found", answ);
 
   delete binary_file_handler;
 }
