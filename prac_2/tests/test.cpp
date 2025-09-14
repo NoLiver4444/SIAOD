@@ -1,4 +1,22 @@
 #include "test.h"
+#include <chrono>
+#include <iostream>
+
+using namespace std;
+using namespace std::chrono;
+
+// Объявление дружественного класса для доступа к приватным методам
+class BinaryFileHandlerTestFriend {
+public:
+    static void create_index(BinaryFileHandler* handler) {
+        handler->create_index();
+    }
+};
+
+int main() {
+  testing::InitGoogleTest();
+  return RUN_ALL_TESTS();
+}
 
 TEST(number_1_2, test_1) {
   BinaryFileHandler *binary_file_handler =
@@ -46,7 +64,11 @@ TEST(number_1_2, test_3) {
 
   binary_file_handler->input_to_file(user3);
 
+  auto start = high_resolution_clock::now();
   UserInfo answ = binary_file_handler->linear_search("+9-999-999-99-99");
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<milliseconds>(end - start);
+  cout << "Time: " << duration.count() << " ms" << endl;
 
   EXPECT_EQ("zxcv", answ.name);
   EXPECT_EQ("+9-999-999-99-99", answ.phone);
@@ -67,7 +89,11 @@ TEST(number_1_2, test_4) {
 
   binary_file_handler->input_to_file(user3);
 
+  auto start = high_resolution_clock::now();
   UserInfo answ = binary_file_handler->linear_search("+9-999-999-99-99");
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<milliseconds>(end - start);
+  cout << "Time: " << duration.count() << " ms" << endl;
 
   EXPECT_EQ("zxcv", answ.name);
   EXPECT_EQ("+9-999-999-99-99", answ.phone);
@@ -88,7 +114,11 @@ TEST(number_1_2, test_5) {
 
   binary_file_handler->input_to_file(user3);
 
+  auto start = high_resolution_clock::now();
   UserInfo answ = binary_file_handler->linear_search("+9-999-999-99-99");
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<milliseconds>(end - start);
+  cout << "Time: " << duration.count() << " ms" << endl;
 
   EXPECT_EQ("zxcv", answ.name);
   EXPECT_EQ("+9-999-999-99-99", answ.phone);
@@ -127,8 +157,13 @@ TEST(number_3, test_1) {
 
   binary_file_handler->random_file(4999);
 
-  binary_file_handler->create_index();
+  BinaryFileHandlerTestFriend::create_index(binary_file_handler);
+
+  auto start = high_resolution_clock::now();
   string answ = binary_file_handler->binary_search_result("+9-999-999-99-99");
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<milliseconds>(end - start);
+  cout << "Time: " << duration.count() << " ms" << endl;
 
   binary_file_handler->binary_to_txt();
 
@@ -148,8 +183,13 @@ TEST(number_3, test_2) {
 
   binary_file_handler->random_file(4999);
 
-  binary_file_handler->create_index();
+  BinaryFileHandlerTestFriend::create_index(binary_file_handler);
+
+  auto start = high_resolution_clock::now();
   string answ = binary_file_handler->binary_search_result("+1-111-111-11-11");
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<milliseconds>(end - start);
+  cout << "Time: " << duration.count() << " ms" << endl;
 
   binary_file_handler->binary_to_txt();
 
@@ -164,12 +204,84 @@ TEST(number_3, test_3) {
 
   binary_file_handler->random_file(100);
 
-  binary_file_handler->create_index();
+  BinaryFileHandlerTestFriend::create_index(binary_file_handler);
   string answ = binary_file_handler->binary_search_result("+9-999-999-99-99");
 
   binary_file_handler->binary_to_txt();
 
   EXPECT_EQ("not found", answ);
+
+  delete binary_file_handler;
+}
+
+TEST(number_3, test_4) {
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out_4.bin");
+
+  binary_file_handler->random_file(99);
+
+  UserInfo user3("zxcv", "+9-999-999-99-99", "@zxcv");
+  binary_file_handler->input_to_file(user3);
+
+  BinaryFileHandlerTestFriend::create_index(binary_file_handler);
+
+  auto start = high_resolution_clock::now();
+  string answ = binary_file_handler->binary_search_result("+9-999-999-99-99");
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<milliseconds>(end - start);
+  cout << "Time: " << duration.count() << " ms" << endl;
+
+  binary_file_handler->binary_to_txt();
+
+  EXPECT_EQ("zxcv: +9-999-999-99-99, @zxcv\n", answ);
+
+  delete binary_file_handler;
+}
+
+TEST(number_3, test_5) {
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out_4.bin");
+
+  binary_file_handler->random_file(999);
+
+  UserInfo user3("zxcv", "+9-999-999-99-99", "@zxcv");
+  binary_file_handler->input_to_file(user3);
+
+  BinaryFileHandlerTestFriend::create_index(binary_file_handler);
+
+  auto start = high_resolution_clock::now();
+  string answ = binary_file_handler->binary_search_result("+9-999-999-99-99");
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<milliseconds>(end - start);
+  cout << "Time: " << duration.count() << " ms" << endl;
+
+  binary_file_handler->binary_to_txt();
+
+  EXPECT_EQ("zxcv: +9-999-999-99-99, @zxcv\n", answ);
+
+  delete binary_file_handler;
+}
+
+TEST(number_3, test_6) {
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out_4.bin");
+
+  binary_file_handler->random_file(9999);
+
+  UserInfo user3("zxcv", "+9-999-999-99-99", "@zxcv");
+  binary_file_handler->input_to_file(user3);
+
+  BinaryFileHandlerTestFriend::create_index(binary_file_handler);
+  
+  auto start = high_resolution_clock::now();
+  string answ = binary_file_handler->binary_search_result("+9-999-999-99-99");
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<milliseconds>(end - start);
+  cout << "Time: " << duration.count() << " ms" << endl;
+
+  binary_file_handler->binary_to_txt();
+
+  EXPECT_EQ("zxcv: +9-999-999-99-99, @zxcv\n", answ);
 
   delete binary_file_handler;
 }

@@ -31,16 +31,27 @@ TEST_OBJS = $(patsubst $(TEST_DIR)/%.cpp,$(TESTS_OBJ_DIR)/%.o,$(TEST_SRCS))
 MAIN_SRC = $(wildcard $(SRC_DIR)/main.cpp)
 MAIN_OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(MAIN_SRC))
 
-.PHONY: all test gcov_report clean rebuild style leaks valgrind answ
+# Фильтруем объектные файлы без main
+LIB_OBJS = $(filter-out $(MAIN_OBJ),$(OBJS))
 
-all: answ test
+.PHONY: all test main gcov_report clean rebuild style leaks valgrind answ
+
+all: main test
+
+main: $(MAIN_TARGET)
 
 test: $(TARGET)
 
-$(MAIN_TARGET): $(OBJ_DIR) $(BIN_DIR) $(filter-out $(MAIN_OBJ),$(OBJS)) $(MAIN_OBJ)
-	$(CXX) $(CXXFLAGS) $(filter-out $(MAIN_OBJ),$(OBJS)) $(MAIN_OBJ) -o $(BIN_DIR)/$@
+# Компиляция основной программы
+$(MAIN_TARGET): $(OBJ_DIR) $(BIN_DIR) $(LIB_OBJS) $(MAIN_OBJ)
+	$(CXX) $(CXXFLAGS) $(LIB_OBJS) $(MAIN_OBJ) -o $(BIN_DIR)/$@
 	@echo "\n\033[0;32mMain program compiled successfully!\033[0m\n"
 	@echo "Run with: ./$(BIN_DIR)/$(MAIN_TARGET)"
+
+# Запуск основной программы
+run: $(MAIN_TARGET)
+	@echo "\n\033[0;32mRunning main program...\033[0m\n"
+	@./$(BIN_DIR)/$(MAIN_TARGET)
 
 install_lib:
 	sudo apt update
@@ -64,12 +75,18 @@ gcov_report: clean
 	lcov --remove coverage.info "/usr/*" "tests" --output-file coverage.info.cleaned
 	genhtml coverage.info.cleaned --output-directory coverage
 
+# Компиляция тестов
 $(TARGET): $(TESTS_OBJ_DIR) $(OBJ_DIR) $(LIBRARY) $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) $(TEST_OBJS) $(LIBRARY) $(LDFLAGS) -o $@
+	@echo "\n\033[0;32mTests compiled successfully!\033[0m\n"
+	@echo "Run with: make test_run"
+
+# Запуск тестов
+test_run: $(TARGET)
 	@echo "\n\033[0;32mRunning tests...\033[0m\n"
 	@./$(TARGET)
 
-$(LIBRARY): $(OBJS)
+$(LIBRARY): $(LIB_OBJS)
 	ar rcs $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -110,11 +127,23 @@ clang-fix:
 	clang-format -i --style=file $$(find . -type f \( -name "*.tpp" -o -name "*.h" -o -name "*.cpp" \))
 	rm -f .clang-format
 
-leaks:
+leaks: $(TARGET)
 	leaks --atExit -- ./$(TARGET)
 
-valgrind:
+valgrind: $(TARGET)
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TARGET)
 
 answ:
 	mkdir -p answ
+
+help:
+	@echo "Available commands:"
+	@echo "  make all       - Build both main program and tests"
+	@echo "  make main      - Build only main program"
+	@echo "  make run       - Build and run main program"
+	@echo "  make test      - Build only tests"
+	@echo "  make test_run  - Build and run tests"
+	@echo "  make clean     - Clean all build artifacts"
+	@echo "  make rebuild   - Clean and rebuild everything"
+	@echo "  make leaks     - Run tests with leaks detection"
+	@echo "  make valgrind  - Run tests with valgrind"

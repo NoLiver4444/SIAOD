@@ -137,6 +137,8 @@ void BinaryFileHandler::create_index() {
 
   sort(index_table.begin(), index_table.end());
 
+  index_loaded = true;
+
   binFile.close();
 }
 
