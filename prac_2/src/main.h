@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#include "get_random_data.h"
 #include "binary_file_handler.h"
+#include "get_random_data.h"
 
 #endif

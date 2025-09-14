@@ -1,7 +1,8 @@
 #include "test.h"
 
 TEST(tests, test_1) {
-  BinaryFileHandler *binary_file_handler = new BinaryFileHandler("answ/out.bin");
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out.bin");
 
   UserInfo user1("qwer", "+7-916-254-76-23", "@qwer");
   UserInfo user2("asdf", "+7-456-632-81-28", "@asdf");
@@ -15,7 +16,8 @@ TEST(tests, test_1) {
 }
 
 TEST(tests, test_2) {
-  BinaryFileHandler *binary_file_handler = new BinaryFileHandler("answ/out.bin");
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out.bin");
 
   UserInfo user1("qwer", "+7-916-254-76-23", "@qwer");
   UserInfo user2("asdf", "+7-456-632-81-28", "@asdf");
@@ -35,7 +37,8 @@ TEST(tests, test_2) {
 }
 
 TEST(tests, test_3) {
-  BinaryFileHandler *binary_file_handler = new BinaryFileHandler("answ/out_1.bin");
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out_1.bin");
 
   binary_file_handler->random_file(99);
 
@@ -55,7 +58,8 @@ TEST(tests, test_3) {
 }
 
 TEST(tests, test_4) {
-  BinaryFileHandler *binary_file_handler = new BinaryFileHandler("answ/out_2.bin");
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out_2.bin");
 
   binary_file_handler->random_file(999);
 
@@ -75,7 +79,8 @@ TEST(tests, test_4) {
 }
 
 TEST(tests, test_5) {
-  BinaryFileHandler *binary_file_handler = new BinaryFileHandler("answ/out_3.bin");
+  BinaryFileHandler *binary_file_handler =
+      new BinaryFileHandler("answ/out_3.bin");
 
   binary_file_handler->random_file(9999);
 

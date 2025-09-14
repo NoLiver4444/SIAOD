@@ -1,12 +1,15 @@
 #include "binary_file_handler.h"
 
+// Конструктор
 BinaryFileHandler::BinaryFileHandler(string file_name) : file_name(file_name) {}
 
+// Деструктор
 BinaryFileHandler::~BinaryFileHandler() {
-    ofstream binFile(file_name, ios::binary | ios::trunc);
-    binFile.close();
+  ofstream binFile(file_name, ios::binary | ios::trunc);
+  binFile.close();
 }
 
+// Вводим значения в файл в таком виде - "Размер_элемента элемент"
 void BinaryFileHandler::input_to_file(UserInfo user_data) {
   ofstream binFile(file_name, ios::binary | ios::app);
 
@@ -26,22 +29,24 @@ void BinaryFileHandler::input_to_file(UserInfo user_data) {
   binFile.close();
 }
 
-void BinaryFileHandler::binary_to_UserInfo(UserInfo *user, ifstream& binFile) {
-    size_t name_len, phone_len, address_len;
+// Считываем строчку из бинарного файла в структуру UserInfo
+void BinaryFileHandler::binary_to_UserInfo(UserInfo *user, ifstream &binFile) {
+  size_t name_len, phone_len, address_len;
 
-    binFile.read(reinterpret_cast<char *>(&name_len), sizeof(name_len));
-    user->name.resize(name_len);
-    binFile.read(&user->name[0], name_len);
+  binFile.read(reinterpret_cast<char *>(&name_len), sizeof(name_len));
+  user->name.resize(name_len);
+  binFile.read(&user->name[0], name_len);
 
-    binFile.read(reinterpret_cast<char *>(&phone_len), sizeof(phone_len));
-    user->phone.resize(phone_len);
-    binFile.read(&user->phone[0], phone_len);
+  binFile.read(reinterpret_cast<char *>(&phone_len), sizeof(phone_len));
+  user->phone.resize(phone_len);
+  binFile.read(&user->phone[0], phone_len);
 
-    binFile.read(reinterpret_cast<char *>(&address_len), sizeof(address_len));
-    user->address.resize(address_len);
-    binFile.read(&user->address[0], address_len);
+  binFile.read(reinterpret_cast<char *>(&address_len), sizeof(address_len));
+  user->address.resize(address_len);
+  binFile.read(&user->address[0], address_len);
 }
 
+// Вывод в терминал
 void BinaryFileHandler::output_from_file() {
   ifstream binFile(file_name, ios::binary);
   UserInfo user;
@@ -61,9 +66,10 @@ void BinaryFileHandler::output_from_file() {
   binFile.close();
 }
 
+// Вывод в txt файл
 void BinaryFileHandler::binary_to_txt() {
-    ifstream binFile(file_name, ios::binary);
-    ofstream txtFile(file_name + ".txt");
+  ifstream binFile(file_name, ios::binary);
+  ofstream txtFile(file_name + ".txt");
   UserInfo user;
 
   while (binFile.peek() != EOF) {
@@ -76,20 +82,22 @@ void BinaryFileHandler::binary_to_txt() {
   txtFile.close();
 }
 
+// Создание бинарного файла с рандомными значениями
 void BinaryFileHandler::random_file(int len) {
-    UserInfo *data = new UserInfo();
+  UserInfo *data = new UserInfo();
 
-    for (int i = 0; i < len; ++i) {
-        data->name = get_random_name();
-        data->phone = get_random_phone();
-        data->address = get_random_address();
+  for (int i = 0; i < len; ++i) {
+    data->name = get_random_name();
+    data->phone = get_random_phone();
+    data->address = get_random_address();
 
-        this->input_to_file(*data);
-    }
+    this->input_to_file(*data);
+  }
 
-    delete data;
+  delete data;
 }
 
+// Линей  ный поиск
 UserInfo BinaryFileHandler::linear_search(string phone) {
   ifstream binFile(file_name, ios::binary);
   UserInfo user;
@@ -107,4 +115,27 @@ UserInfo BinaryFileHandler::linear_search(string phone) {
   user.address = "";
 
   return user;
+}
+
+// Создаём таблицу с индексами
+void BinaryFileHandler::create_index() {
+  ifstream binFile(file_name, ios::binary);
+  index_table.clear();
+
+  UserInfo user;
+
+  while (binFile.peek() != EOF) {
+    streampos record_start = binFile.tellg();
+    binary_to_UserInfo(&user, binFile);
+
+    IndexTable entry;
+    entry.phone = user.phone;
+    entry.offset = record_start;
+
+    index_table.push_back(entry);
+  }
+
+  sort(index_table.begin(), index_table.end());
+
+  binFile.close();
 }
