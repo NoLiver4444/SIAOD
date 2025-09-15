@@ -44,9 +44,9 @@ int main() {
 
       auto start = high_resolution_clock::now();
       user = binary_file_handler->linear_search(phone);
-      auto end = high_resolution_clock::now();
-      auto duration = duration_cast<milliseconds>(end - start);
-      cout << "Time: " << duration.count() << " ms" << endl;
+      auto end = std::chrono::high_resolution_clock::now();
+      auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+      cout << "Search time: " << duration.count() << " microseconds" << endl;
 
       cout << user.name << ": " << user.phone << ", " << user.address << "\n";
     } else if (choose == 4) {
@@ -57,9 +57,9 @@ int main() {
 
       auto start = high_resolution_clock::now();
       answ = binary_file_handler->binary_search_result(phone);
-      auto end = high_resolution_clock::now();
-      auto duration = duration_cast<milliseconds>(end - start);
-      cout << "Time: " << duration.count() << " ms" << endl;
+      auto end = std::chrono::high_resolution_clock::now();
+      auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+      cout << "Search time: " << duration.count() << " microseconds" << endl;
 
       cout << "\nAnsw: " << answ << "\n";
     } else if (choose == 5) {
