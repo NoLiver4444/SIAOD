@@ -7,7 +7,7 @@
 
 class HashTable {
  private:
-  std::vector<Node> table;
+  std::vector<Node *> table;
   int size;
   int capacity;
 
@@ -23,6 +23,12 @@ class HashTable {
   bool insert(const Book &book);
   Book *search(int isbn);
   bool remove(int isbn);
+
+  void autoFill();
+
+  void display();
+
+  int getSize();
 };
 
 #endif

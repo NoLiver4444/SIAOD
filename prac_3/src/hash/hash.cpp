@@ -1,6 +1,6 @@
 #include "hash.h"
 
-HashTable::HashTable() : size(0), capacity(capacity) {
+HashTable::HashTable(int capacity) : size(0), capacity(capacity) {
   table.resize(capacity, nullptr);
 }
 
@@ -10,7 +10,7 @@ HashTable::~HashTable() {
 
     while (current != nullptr) {
       Node *next = current->next;
-      delete[] current;
+      delete current;
       current = next;
     }
   }
@@ -19,12 +19,12 @@ HashTable::~HashTable() {
 int HashTable::hashFunction(int key) { return key % capacity; }
 
 void HashTable::reHash() {
-  int oldCapacity = capacity;
+  int old_capacity = capacity;
   capacity *= 2;
 
-  vector<Node *> newTable(capacity, nullptr);
+  std::vector<Node *> new_table(capacity, nullptr);
 
-  for (int i = 0; i < oldCapacity; ++i) {
+  for (int i = 0; i < old_capacity; ++i) {
     Node *current = table[i];
 
     while (current != nullptr) {
@@ -32,37 +32,39 @@ void HashTable::reHash() {
 
       int new_index = hashFunction(current->data.isbn);
 
-      current->next = newTable[newIndex];
-      newTable[newIndex] = current;
+      current->next = new_table[new_index];
+      new_table[new_index] = current;
 
       current = next;
     }
   }
 
-  table = newTable;
+  table = new_table;
 }
 
 bool HashTable::insert(const Book &book) {
+  bool answ = true;
+
   if (search(book.isbn) != nullptr) {
-    return false;
+    answ = false;
+  } else {
+    int index = hashFunction(book.isbn);
+
+    Node *new_node = new Node(book);
+
+    new_node->next = table[index];
+    table[index] = new_node;
+
+    ++size;
+
+    double loadFactor = (double)size / capacity;
+
+    if (loadFactor > LOAD_FACTOR_THRESHOLD) {
+        reHash();
+    }
   }
 
-  int index = hashFunction(book.isbn);
-
-  Node *new_node = new Node(book);
-
-  new_node->next = table[index];
-  table[index] = new_node;
-
-  ++size;
-
-  double loadFactor = (double)size / capacity;
-
-  if (loadFactor > LOAD_FACTOR_THRESHOLD) {
-    reHash();
-  }
-
-  return true;
+  return answ;
 }
 
 Book *HashTable::search(int isbn) {
@@ -78,40 +80,92 @@ Book *HashTable::search(int isbn) {
     current = current->next;
   }
 
-  return nullptr
+  return nullptr;
 }
 
 bool HashTable::remove(int isbn) {
   int index = hashFunction(isbn);
+  bool answ = false;
 
   Node *current = table[index];
 
   if (current == nullptr) {
-    return false;
-  }
-
-  if (current->data.isbn == isbn) {
+    answ = false;
+  } else if (current->data.isbn == isbn) {
     table[index] = current->next;
 
     delete current;
     --size;
 
-    return true;
-  }
+    answ = true;
+  } else {
+    while (current != nullptr) {
+        if (current->next->data.isbn == isbn) {
+        Node *nodeToDelete = current->next;
 
-  while (current != nullptr) {
-    if (current->next->data.isbn == isbn) {
-      Node *nodeToDelete = current->next;
+        current->next = nodeToDelete->next;
 
-      current->next = nodeToDelete->next;
+        delete nodeToDelete;
+        size--;
 
-      delete nodeToDelete;
-      size--;
-
-      return true;
+        answ = true;
+        }
+        current = current->next;
     }
-    current = current->next;
+    }
+
+  return answ;
+}
+
+void HashTable::autoFill() {
+  Book predefinedBooks[] = {
+      Book("Война и мир", "Лев Толстой", 101),
+      Book("Преступление и наказание", "Федор Достоевский", 203),
+      Book("Мастер и Маргарита", "Михаил Булгаков", 307),
+      Book("Евгений Онегин", "Александр Пушкин", 412),
+      Book("Отцы и дети", "Иван Тургенев", 523),
+      Book("Тихий Дон", "Михаил Шолохов", 636),
+      Book("Герой нашего времени", "Михаил Лермонтов", 749)};
+
+  int bookCount = sizeof(predefinedBooks) / sizeof(predefinedBooks[0]);
+
+  for (int i = 0; i < bookCount; ++i) {
+    if (insert(predefinedBooks[i])) {
+      std::cout << "Добавлена: " << predefinedBooks[i].title
+                << " (ISBN: " << predefinedBooks[i].isbn << ")" << std::endl;
+    }
   }
 
-  return false;
+  std::cout << std::endl;
+}
+
+void HashTable::display() {
+  std::cout << "\n=== ХЕШ-ТАБЛИЦА ===" << std::endl;
+  std::cout << "Размер таблицы: " << capacity << std::endl;
+  std::cout << "Количество элементов: " << size << std::endl;
+  std::cout << "Коэффициент загрузки: " << (double)size / capacity << std::endl;
+  std::cout << "=========================" << std::endl;
+
+  for (int i = 0; i < capacity; ++i) {
+    std::cout << "[" << i << "]: ";
+    Node *current = table[i];
+
+    if (current == nullptr) {
+      std::cout << "пусто";
+    } else {
+      while (current != nullptr) {
+        std::cout << "ISBN:" << current->data.isbn << " \""
+                  << current->data.title << "\"";
+        if (current->next != nullptr) {
+          std::cout << " → ";
+        }
+        current = current->next;
+      }
+    }
+    std::cout << std::endl;
+  }
+}
+
+int HashTable::getSize() {
+    return size;
 }
