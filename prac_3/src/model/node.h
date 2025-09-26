@@ -3,13 +3,11 @@
 
 #include "book.h"
 
-struct Node
-{
-    Book data;
-    Node *next;
+struct Node {
+  Book data;
+  Node *next;
 
-    Node(const Book &book);
+  Node(const Book &book);
 };
-
 
 #endif

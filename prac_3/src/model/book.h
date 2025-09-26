@@ -4,11 +4,11 @@
 #include <string>
 
 struct Book {
-    std::string title;
-    std::string author;
-    int isbn;
+  std::string title;
+  std::string author;
+  int isbn;
 
-    Book(std::string title, std::string author, int isbn);
+  Book(std::string title, std::string author, int isbn);
 };
 
 #endif

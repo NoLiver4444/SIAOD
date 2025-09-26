@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "model/book.h"
 #include "hash/hash.h"
+#include "model/book.h"
 
 #endif
