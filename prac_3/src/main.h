@@ -5,4 +5,6 @@
 #include "model/book.h"
 #include "model/node.h"
 
+using namespace std;
+
 #endif

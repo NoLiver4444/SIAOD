@@ -60,7 +60,7 @@ bool HashTable::insert(const Book &book) {
     double loadFactor = (double)size / capacity;
 
     if (loadFactor > LOAD_FACTOR_THRESHOLD) {
-        reHash();
+      reHash();
     }
   }
 
@@ -100,7 +100,7 @@ bool HashTable::remove(int isbn) {
     answ = true;
   } else {
     while (current != nullptr) {
-        if (current->next->data.isbn == isbn) {
+      if (current->next->data.isbn == isbn) {
         Node *nodeToDelete = current->next;
 
         current->next = nodeToDelete->next;
@@ -109,10 +109,10 @@ bool HashTable::remove(int isbn) {
         size--;
 
         answ = true;
-        }
-        current = current->next;
+      }
+      current = current->next;
     }
-    }
+  }
 
   return answ;
 }
@@ -166,6 +166,4 @@ void HashTable::display() {
   }
 }
 
-int HashTable::getSize() {
-    return size;
-}
+int HashTable::getSize() { return size; }
