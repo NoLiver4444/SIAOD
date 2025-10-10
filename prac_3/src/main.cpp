@@ -34,7 +34,7 @@ int main() {
       Book *book = hash_table.search(isbn);
 
       if (book != nullptr) {
-        cout << "ISBN:" << isbn << " \"" << title << "\" " << author << endl;
+        cout << "ISBN:" << book->isbn << " \"" << book->title << "\" " << book->author << endl;
       } else {
         cout << "Пусто" << endl;
       }
