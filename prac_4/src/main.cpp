@@ -41,9 +41,9 @@
 //   std::string original8 = "Длинный оригинальный текст";
 //   std::string suspected8 = "Короткий";
 
-//   std::cout << "\n=== ТЕСТ 8: Текст короче минимальной длины ===" << std::endl;
-//   std::cout << "Оригинал: " << original8 << std::endl;
-//   std::cout << "Подозрительный: " << suspected8 << std::endl << std::endl;
+//   std::cout << "\n=== ТЕСТ 8: Текст короче минимальной длины ===" <<
+//   std::endl; std::cout << "Оригинал: " << original8 << std::endl; std::cout
+//   << "Подозрительный: " << suspected8 << std::endl << std::endl;
 //   checker.detailedCheck(original8, suspected8, 10);
 
 //   // Тест 9: Пустые строки
@@ -82,7 +82,6 @@ int main() {
 
     checker.detailedCheck(original_text, suspected_text, min_len);
   }
-
 
   return 0;
 }
