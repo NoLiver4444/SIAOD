@@ -22,7 +22,8 @@ TEST(word_count, two_word) {
 }
 
 TEST(word_count, three_word) {
-  std::string line = "qwer, gfdsfgdsa qwer. fdsahfiudsah, qwer uhduis qwerfdsfsd";
+  std::string line =
+      "qwer, gfdsfgdsa qwer. fdsahfiudsah, qwer uhduis qwerfdsfsd";
 
   StringData data(line);
 
