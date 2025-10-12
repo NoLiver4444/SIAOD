@@ -37,3 +37,35 @@ TEST(word_count, upper_word) {
 
   EXPECT_EQ(4, data.countWord());
 }
+
+TEST(plagiat_check, empty_line) {
+  RabinKarpPlagiarismChecker checker;
+
+  std::string original9 = "Обычный текст";
+  std::string suspected9 = "";
+
+  EXPECT_EQ(false, checker.checkPlagiarism(original9, suspected9, 5));
+}
+
+TEST(plagiat_check, plagiat_yes) {
+  RabinKarpPlagiarismChecker checker;
+
+    std::string original1 =
+      "Этот текст содержит уникальные идеи и оригинальные формулировки для "
+      "проверки системы";
+    std::string suspected1 =
+      "Этот текст содержит уникальные идеи и оригинальные формулировки для ";
+
+  EXPECT_EQ(true, checker.checkPlagiarism(original1, suspected1, 5));
+}
+
+TEST(plagiat_check, plagiat_no) {
+  RabinKarpPlagiarismChecker checker;
+
+    std::string original1 =
+      "qwer";
+    std::string suspected1 =
+      "Этот текст содержит уникальные идеи и оригинальные формулировки для ";
+
+  EXPECT_EQ(false, checker.checkPlagiarism(original1, suspected1, 5));
+}

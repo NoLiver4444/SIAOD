@@ -4,5 +4,6 @@
 #include <gtest/gtest.h>
 
 #include "../src/text_analysis/word_counter.h"
+#include "../src/text_analysis/rabin_karp.h"
 
 #endif
