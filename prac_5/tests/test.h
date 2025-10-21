@@ -4,7 +4,5 @@
 #include <gtest/gtest.h>
 
 #include "../src/AVL_Tree/AVL_Tree.h"
-#include "../src/Iterator/Iterator.h"
-#include "../src/model/Node.h"
 
 #endif

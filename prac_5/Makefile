@@ -5,7 +5,9 @@ LDFLAGS = -lgtest -lgtest_main -lpthread
 
 # Директории
 SRC_DIR = src
-TEXT_ANALYSIS = $(SRC_DIR)/text_analysis
+AVL_TREE_DIR = $(SRC_DIR)/AVL_Tree
+ITERATOR_DIR = $(SRC_DIR)/Iterator
+MODEL_DIR = $(SRC_DIR)/model
 TEST_DIR = tests
 OBJ_DIR = obj
 GCOV_DIR = obj/gcov
@@ -17,21 +19,19 @@ BIN_DIR = bin
 TARGET = test
 MAIN_TARGET = main_program
 GCOV_TARGET = gcov_report
-LIBRARY = prac_1.a
-GCOV_LIBRARY = prac_1_gcov.a
-
-LCOV_FLAGS = -fprofile-arcs -ftest-coverage
 
 # Исходные файлы
-SRCS = $(wildcard $(TEXT_ANALYSIS)/*.cpp)
+SRCS = $(wildcard $(AVL_TREE_DIR)/*.cpp) \
+       $(wildcard $(ITERATOR_DIR)/*.cpp) \
+       $(wildcard $(MODEL_DIR)/*.cpp)
+
 OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
-GCOV_OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(GCOV_DIR)/%.o,$(SRCS))
 
 # Главный файл
 MAIN_SRC = $(SRC_DIR)/main.cpp
 MAIN_OBJ = $(OBJ_DIR)/main.o
 
-# Тестовые файлы (исключаем файлы с main функцией если они есть)
+# Тестовые файлы
 TEST_SRCS = $(wildcard $(TEST_DIR)/*.cpp)
 TEST_OBJS = $(patsubst $(TEST_DIR)/%.cpp,$(TESTS_OBJ_DIR)/%.o,$(TEST_SRCS))
 
@@ -69,32 +69,18 @@ install_gtest:
 	sudo cp -r /usr/src/googletest/googletest/include/gtest /usr/local/include/
 	sudo cp /usr/src/googletest/build/lib/*.a /usr/local/lib/
 
-# Gcov отчет - ИСПРАВЛЕННАЯ ВЕРСИЯ
+# Gcov отчет
 gcov_report: $(GCOV_DIR) $(TESTS_OBJ_DIR) $(BIN_DIR)
-	# Компилируем только тестовые файлы и библиотечные файлы, исключая main.cpp
-	$(CXX) $(CXXFLAGS) $(LCOV_FLAGS) $(TEST_SRCS) $(SRCS) -o $(BIN_DIR)/$(GCOV_TARGET) $(LDFLAGS) -lgcov
+	$(CXX) $(CXXFLAGS) -fprofile-arcs -ftest-coverage $(TEST_SRCS) $(SRCS) -o $(BIN_DIR)/$(GCOV_TARGET) $(LDFLAGS) -lgcov
 	@./$(BIN_DIR)/$(GCOV_TARGET)
 	lcov --ignore-errors mismatch --capture --directory . --output-file coverage.info
-	lcov --remove coverage.info "/usr/*" "tests" --output-file coverage.info.cleaned
+	lcov --remove coverage.info "/usr/*" "tests/*" --output-file coverage.info.cleaned
 	genhtml coverage.info.cleaned --output-directory coverage
 	@echo "\n\033[0;32mGcov report generated in coverage/ directory\033[0m\n"
-
-# Альтернативная версия gcov_report без использования main.cpp
-gcov_report_alt: $(GCOV_DIR) $(TESTS_OBJ_DIR) $(BIN_DIR) $(GCOV_LIBRARY)
-	$(CXX) $(CXXFLAGS) $(LCOV_FLAGS) $(TEST_SRCS) -L. -l:$(GCOV_LIBRARY) -o $(BIN_DIR)/$(GCOV_TARGET) $(LDFLAGS) -lgcov
-	@./$(BIN_DIR)/$(GCOV_TARGET)
-	lcov --ignore-errors mismatch --capture --directory . --output-file coverage.info
-	lcov --remove coverage.info "/usr/*" "tests" --output-file coverage.info.cleaned
-	genhtml coverage.info.cleaned --output-directory coverage
-	@echo "\n\033[0;32mGcov report generated in coverage/ directory\033[0m\n"
-
-# Создание gcov библиотеки
-$(GCOV_LIBRARY): $(GCOV_OBJS)
-	ar rcs $@ $^
 
 # Компиляция тестов
-$(TARGET): $(TESTS_OBJ_DIR) $(OBJ_DIR) $(LIBRARY) $(TEST_OBJS) $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) $(TEST_OBJS) $(LIBRARY) $(LDFLAGS) -o $(BIN_DIR)/$@
+$(TARGET): $(TESTS_OBJ_DIR) $(OBJ_DIR) $(TEST_OBJS) $(LIB_OBJS) $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $(TEST_OBJS) $(LIB_OBJS) $(LDFLAGS) -o $(BIN_DIR)/$@
 	@echo "\n\033[0;32mTests compiled successfully!\033[0m\n"
 	@echo "Run with: make test_run"
 
@@ -103,16 +89,21 @@ test_run: $(TARGET)
 	@echo "\n\033[0;32mRunning tests...\033[0m\n"
 	@./$(BIN_DIR)/$(TARGET)
 
-# Создание библиотеки
-$(LIBRARY): $(LIB_OBJS)
-	ar rcs $@ $^
-
 # Компиляция объектных файлов для src
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/text_analysis/%.o: $(TEXT_ANALYSIS)/%.cpp
+# Компиляция объектных файлов для поддиректорий src
+$(OBJ_DIR)/AVL_Tree/%.o: $(AVL_TREE_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/Iterator/%.o: $(ITERATOR_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/model/%.o: $(MODEL_DIR)/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -124,21 +115,29 @@ $(TESTS_OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 # Компиляция объектных файлов для gcov
 $(GCOV_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(LCOV_FLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -fprofile-arcs -ftest-coverage -c $< -o $@
 
-$(GCOV_DIR)/text_analysis/%.o: $(TEXT_ANALYSIS)/%.cpp
+$(GCOV_DIR)/AVL_Tree/%.o: $(AVL_TREE_DIR)/%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(LCOV_FLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -fprofile-arcs -ftest-coverage -c $< -o $@
+
+$(GCOV_DIR)/Iterator/%.o: $(ITERATOR_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -fprofile-arcs -ftest-coverage -c $< -o $@
+
+$(GCOV_DIR)/model/%.o: $(MODEL_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -fprofile-arcs -ftest-coverage -c $< -o $@
 
 # Создание директорий
 $(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR) $(OBJ_DIR)/text_analysis $(OBJ_DIR)/model
+	@mkdir -p $(OBJ_DIR) $(OBJ_DIR)/AVL_Tree $(OBJ_DIR)/Iterator $(OBJ_DIR)/model
 
 $(TESTS_OBJ_DIR):
 	@mkdir -p $(TESTS_OBJ_DIR)
 
 $(GCOV_DIR):
-	@mkdir -p $(GCOV_DIR) $(GCOV_DIR)/text_analysis $(GCOV_DIR)/model
+	@mkdir -p $(GCOV_DIR) $(GCOV_DIR)/AVL_Tree $(GCOV_DIR)/Iterator $(GCOV_DIR)/model
 
 $(BIN_DIR):
 	@mkdir -p $(BIN_DIR)
@@ -187,7 +186,6 @@ help:
 	@echo "  make test      - Build only tests"
 	@echo "  make test_run  - Build and run tests"
 	@echo "  make gcov_report - Generate code coverage report"
-	@echo "  make gcov_report_alt - Alternative gcov report (if main conflict)"
 	@echo "  make clean     - Clean all build artifacts"
 	@echo "  make rebuild   - Clean and rebuild everything"
 	@echo "  make style     - Check code style"
