@@ -73,6 +73,13 @@ class AVL_Tree {
   void print();
   bool eq_Tree(AVL_Tree *other);
 
+  int tree_height();
+  int path_length_to_value(const Key &key);
+  std::vector<std::pair<Key, Value>> post_order();
+  std::vector<std::pair<Key, Value>> in_order();
+  void pre_order_traversal(Node *node,
+                           std::vector<std::pair<Key, Value>> &result);
+
  protected:
   struct Node {
     // Конструкторы
@@ -106,6 +113,13 @@ class AVL_Tree {
   Node *Right_Left(Node *node);
   void print_tree(Node *node, int indent, bool last);
   Node *find_node(const Key &key, Node *node);
+  int get_node_height(Node *node);
+  int find_path_length(Node *node, const Key &key, int current_depth);
+  void post_order_traversal(Node *node,
+                            std::vector<std::pair<Key, Value>> &result);
+  void AVL_Tree<Key, Value>::in_order_traversal(
+      Node *node, std::vector<std::pair<Key, Value>> &result);
+  std::vector<std::pair<Key, Value>> pre_order()
 };
 
 #include "AVL_Tree.tpp"

@@ -600,3 +600,90 @@ void AVL_Tree<Key, Value>::clear() {
   }
   remove_Tree(root);
 }
+
+template <typename Key, typename Value>
+void AVL_Tree<Key, Value>::post_order_traversal(
+    Node *node, std::vector<std::pair<Key, Value>> &result) {
+  if (node == nullptr) return;
+
+  post_order_traversal(node->left, result);
+  post_order_traversal(node->right, result);
+  result.push_back({node->key, node->value});
+}
+
+template <typename Key, typename Value>
+std::vector<std::pair<Key, Value>> AVL_Tree<Key, Value>::post_order() {
+  std::vector<std::pair<Key, Value>> result;
+  post_order_traversal(root, result);
+  return result;
+}
+
+template <typename Key, typename Value>
+void AVL_Tree<Key, Value>::in_order_traversal(
+    Node *node, std::vector<std::pair<Key, Value>> &result) {
+  if (node == nullptr) return;
+
+  in_order_traversal(node->left, result);
+  result.push_back({node->key, node->value});
+  in_order_traversal(node->right, result);
+}
+
+template <typename Key, typename Value>
+std::vector<std::pair<Key, Value>> AVL_Tree<Key, Value>::in_order() {
+  std::vector<std::pair<Key, Value>> result;
+  in_order_traversal(root, result);
+  return result;
+}
+
+template <typename Key, typename Value>
+void AVL_Tree<Key, Value>::pre_order_traversal(
+    Node *node, std::vector<std::pair<Key, Value>> &result) {
+  if (node == nullptr) return;
+
+  result.push_back({node->key, node->value});
+  pre_order_traversal(node->left, result);
+  pre_order_traversal(node->right, result);
+}
+
+template <typename Key, typename Value>
+std::vector<std::pair<Key, Value>> AVL_Tree<Key, Value>::pre_order() {
+  std::vector<std::pair<Key, Value>> result;
+  pre_order_traversal(root, result);
+  return result;
+}
+
+template <typename Key, typename Value>
+int AVL_Tree<Key, Value>::path_length_to_value(const Key &key) {
+  return find_path_length(root, key, 0);
+}
+
+template <typename Key, typename Value>
+int AVL_Tree<Key, Value>::find_path_length(Node *node, const Key &key,
+                                           int current_depth) {
+  if (node == nullptr) {
+    return -1;
+  }
+
+  if (key == node->key) {
+    return current_depth;
+  }
+
+  if (key < node->key) {
+    return find_path_length(node->left, key, current_depth + 1);
+  } else {
+    return find_path_length(node->right, key, current_depth + 1);
+  }
+}
+
+template <typename Key, typename Value>
+int AVL_Tree<Key, Value>::tree_height() {
+  return get_node_height(root);
+}
+
+template <typename Key, typename Value>
+int AVL_Tree<Key, Value>::get_node_height(Node *node) {
+  if (node == nullptr) {
+    return -1;
+  }
+  return node->height;
+}
